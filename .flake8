@@ -1,5 +1,5 @@
 [flake8]
-ignore = D100
+ignore = D100, W504
 disable-noqa = True
 paths = 
     ./pep_parse

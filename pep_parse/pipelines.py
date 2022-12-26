@@ -16,13 +16,14 @@ def write_status_summary(status_summary):
     file_name = f"status_summary_{now_formatted}.csv"
     file_path = results_dir / file_name
 
+    # Сделал так потому что правила W503 и W504 flake8 противоречат друг другу,
+    # а тесты не игнорируют W503 или W504.
+    result = [("Статус", "Количество")] + status_summary.most_common()
+    result += [("Total", sum(status_summary.values()))]
+
     with open(file_path, "w", encoding="utf-8") as f:
         writer = csv.writer(f, dialect="unix")
-        writer.writerows(
-            [("Статус", "Количество")]
-            + status_summary.most_common()
-            + [("Total", sum(status_summary.values()))]
-        )
+        writer.writerows(result)
 
 
 class PepParsePipeline:
