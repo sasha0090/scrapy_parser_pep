@@ -9,9 +9,10 @@ class PepSpider(scrapy.Spider):
     start_urls = ["https://peps.python.org/"]
 
     def parse(self, response):
-        all_pep = response.css("a.pep::attr(href)").getall()
-        for pep_url in all_pep:
-            yield response.follow(pep_url, callback=self.parse_pep)
+        pep_urls = response.css(
+            'section#numerical-index tr > td:nth-child(3) a'
+        )
+        yield from response.follow_all(pep_urls, callback=self.parse_pep)
 
     def parse_pep(self, response):
         number, name = (
